@@ -10,7 +10,7 @@ const HeaderComponent = () => {
         <div className="logo-wrapper">
           <h2 className="logo-font">Tottes Tattoo</h2>
         </div>
-        <nav className={showMenu && 'show-main-menu'}>
+        <nav className={showMenu ? 'show-main-menu' : ''}>
           <ul>
             <li>
               <NavLink

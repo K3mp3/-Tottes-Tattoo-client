@@ -46,7 +46,7 @@ header {
 
         a {
           text-decoration: none;
-          color: rgb(232, 232, 232);
+          color: $white-translucent;
           font-weight: 600;
           &:hover {
             color: white;
@@ -59,7 +59,7 @@ header {
           position: relative;
           width: 100%;
           height: 3px;
-          background-color: white;
+          background-color: rgba(255, 255, 255, 0.336);
           border-radius: 5px;
           animation: in 400ms ease-in-out forwards;
         }
@@ -95,7 +95,7 @@ header {
       $height: 5px;
       width: 100%;
       height: $height;
-      background: white;
+      background: $off-white;
       border-radius: 10px;
       transition: 200ms ease-in-out;
 
@@ -106,7 +106,7 @@ header {
         top: 0;
         width: $button-width;
         height: $height;
-        background: white;
+        background: $off-white;
         border-radius: 10px;
         transition: 200ms ease-in-out;
       }
@@ -117,7 +117,7 @@ header {
         bottom: 0;
         width: $button-width;
         height: $height;
-        background: white;
+        background: $off-white;
         border-radius: 10px;
         transition: 200ms ease-in-out;
       }
