@@ -1,7 +1,7 @@
 @use '_variables' as *;
 header {
   display: flex;
-  height: 100px;
+  height: $header-height;
   position: fixed;
   z-index: 99;
   top: 0;
