@@ -6,7 +6,7 @@ const HeroSection = () => {
     <div className="background-image-wrapper">
       <section className="hero-section">
         <div className="text-wrapper">
-          <h1>Get a tatoo like this badboy</h1>
+          <h1>Get a TATTOO like this badboy</h1>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque hic
             aperiam laboriosam. Minima nobis est dolores velit debitis explicabo

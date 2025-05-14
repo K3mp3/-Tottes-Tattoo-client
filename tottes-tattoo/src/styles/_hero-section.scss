@@ -12,22 +12,16 @@
     background: url('./src/assets/img/background-fantasy-land-2-web.webp')
       center center / cover no-repeat;
     transform: scale(1);
-    animation: zoom-in 2s ease-out forwards;
+    animation: zoom-out 2s ease-out forwards;
   }
 }
 
-@keyframes zoom-in {
-  to {
-    transform: scale(1.1);
-  }
-}
-
-@keyframes zoom-in {
+@keyframes zoom-out {
   from {
-    transform: scale(100%);
+    transform: scale(120%);
   }
   to {
-    transform: scale(110%);
+    transform: scale(100%);
   }
 }
 .hero-section {
@@ -56,11 +50,21 @@
     img {
       position: absolute;
       right: 0;
-      bottom: 0;
+      bottom: -20px;
       margin-top: auto;
       margin-left: auto;
       width: 80%;
       height: fit-content;
+      animation: zoom-in 2s ease-out forwards;
+    }
+
+    @keyframes zoom-in {
+      from {
+        transform: scale(100%);
+      }
+      to {
+        transform: scale(110%);
+      }
     }
   }
 }

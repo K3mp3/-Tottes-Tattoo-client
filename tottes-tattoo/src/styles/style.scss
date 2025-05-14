@@ -3,6 +3,13 @@
 @use '_header';
 @use '_hero-section';
 
+h1 {
+  font-family: 'Uncial Antiqua', system-ui;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 3.5rem;
+}
+
 main:first-of-type {
   height: 100vh;
 
@@ -40,5 +47,12 @@ section {
 @media screen and (min-width: 768px) {
   section {
     padding: $page-margin-desktop;
+  }
+
+  h1 {
+    font-size: 5rem;
+    letter-spacing: -1px;
+
+    margin-bottom: 30px;
   }
 }
