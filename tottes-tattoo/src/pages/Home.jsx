@@ -1,19 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center p-10 text-white">
-      <h1 className="text-5xl text-purple-500">Tailwind works!</h1>
-
-      <p className="text-lg max-w-xl mb-8">
-        Book a consultation or tattoo session with our fantasy-inspired artists.
+    <div className="container">
+      <h1>Welcome to Tottes Tattoo</h1>
+      <p style={{ textAlign: 'center', fontSize: '1.2rem' }}>
+        Step into a realm of mystical ink and book your next legendary tattoo or consultation.
       </p>
-      <Link
-        to="/booking"
-        className="bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-lg text-white font-bold transition"
-      >
-        Book Now
-      </Link>
+      
+
+      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+        <img
+          src="https://images.unsplash.com/photo-1603955082018-c42df7e5680d?auto=format&fit=crop&w=800&q=80"
+          alt="Fantasy Tattoo"
+          style={{ width: '100%', borderRadius: '20px', boxShadow: '0 0 10px #bfaaff' }}
+        />
+        <br />
+        <Link to="/booking">
+          <button style={{ marginTop: '2rem' }}>Book Now</button>
+        </Link>
+      </div>
     </div>
   );
 }

@@ -1,3 +1,66 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Orbitron:wght@500&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0d0d1a, #1a0033, #130f40);
+  background-size: 400% 400%;
+  animation: alienGlow 20s ease infinite;
+  font-family: 'Orbitron', sans-serif;
+  color: #ffffff;
+}
+
+@keyframes alienGlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+h1, h2 {
+  font-family: 'Cinzel', serif;
+  color: #bfaaff;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.container {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+  box-shadow: 0 0 20px #72ffb444;
+}
+
+input, select {
+  width: 100%;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 10px;
+  background: #1e1e2e;
+  color: #72ffb4;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+button {
+  background: linear-gradient(to right, #72ffb4, #bfaaff);
+  border: none;
+  color: #000;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
