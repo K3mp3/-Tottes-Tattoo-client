@@ -1,0 +1,89 @@
+@use 'variables' as *;
+.background-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('./src/assets/img/background-fantasy-land-2-web.webp')
+      center center / cover no-repeat;
+    transform: scale(1);
+    animation: zoom-in 2s ease-out forwards;
+  }
+}
+
+@keyframes zoom-in {
+  to {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    transform: scale(100%);
+  }
+  to {
+    transform: scale(110%);
+  }
+}
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - $header-height);
+  overflow: hidden;
+  padding-bottom: 0;
+
+  .text-wrapper {
+    position: relative;
+    z-index: 20;
+    flex: 1;
+  }
+
+  .img-wrapper {
+    flex: 1;
+    display: flex;
+    max-height: calc(50vh - $header-height);
+    margin-left: auto;
+    height: 100%;
+
+    img {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      margin-top: auto;
+      margin-left: auto;
+      width: 80%;
+      height: fit-content;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .hero-section {
+    display: flex;
+    flex-direction: row;
+
+    .text-wrapper {
+      margin-top: -4rem;
+    }
+
+    .img-wrapper {
+      position: relative;
+      z-index: 0;
+      bottom: 0;
+      max-height: calc(100vh);
+
+      img {
+        height: 100%;
+        width: auto;
+      }
+    }
+  }
+}
