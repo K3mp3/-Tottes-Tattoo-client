@@ -1,0 +1,58 @@
+@use 'variables' as *;
+@use '_reset';
+@use '_header';
+@use '_hero-section';
+
+h1 {
+  font-family: 'Uncial Antiqua', system-ui;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 3.5rem;
+}
+
+main:first-of-type {
+  height: 100vh;
+
+  & > * {
+    padding-top: $header-height;
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+section {
+  max-width: $max-width;
+  padding: $page-margin;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.btn {
+  display: block;
+  width: fit-content;
+  padding: 1rem 2rem;
+  background: rgba(203, 12, 12, 0.89);
+  border-radius: 8px;
+  color: white;
+  text-decoration: none;
+  &:hover {
+    color: white;
+    background: rgb(203, 12, 12);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  section {
+    padding: $page-margin-desktop;
+  }
+
+  h1 {
+    font-size: 5rem;
+    letter-spacing: -1px;
+
+    margin-bottom: 30px;
+  }
+}
