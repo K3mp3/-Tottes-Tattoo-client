@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { API_URL } from '../../config/config';
+import { getBookings, createBooking } from '../services/services';
 
 const BookingList = () => {
   const [bookings, setBookings] = useState([]);
@@ -9,12 +9,8 @@ const BookingList = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await fetch(`${API_URL}/bookings`);
-        if (!response.ok) {
-          throw new Error('Kunde inte hämta bokningar');
-        }
-        const result = await response.json();
-        setBookings(result.data || []);
+        const data = await getBookings();
+        setBookings(data || []);
       } catch (err) {
         setError(err.message);
       }
