@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getBookings, createBooking } from '../services/services';
 
-const BookingList = () => {
+const BookingPage = () => {
   const [bookings, setBookings] = useState([]);
 
   const [error, setError] = useState(null);
@@ -40,4 +40,4 @@ const BookingList = () => {
   );
 };
 
-export default BookingList;
+export default BookingPage;

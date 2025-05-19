@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router';
 import HeroSection from '../components/HeroSection';
 
-const Home = () => {
+const HomePage = () => {
   return (
     <>
       <HeroSection />
@@ -10,4 +10,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
