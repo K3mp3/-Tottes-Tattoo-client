@@ -9,8 +9,8 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: url('./src/assets/img/background-fantasy-land-2-web.webp')
-      center center / cover no-repeat;
+    background: url('./src/assets/img/background-fantasy-land-web.webp') center
+      center / cover no-repeat;
     transform: scale(1);
     animation: zoom-out 2s ease-out forwards;
   }
@@ -18,7 +18,7 @@
 
 @keyframes zoom-out {
   from {
-    transform: scale(120%);
+    transform: scale(110%);
   }
   to {
     transform: scale(100%);
@@ -63,7 +63,7 @@
         transform: scale(100%);
       }
       to {
-        transform: scale(115%);
+        transform: scale(110%);
       }
     }
   }
