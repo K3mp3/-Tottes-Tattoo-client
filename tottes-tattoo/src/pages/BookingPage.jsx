@@ -22,7 +22,7 @@ const BookingPage = () => {
 
   return (
     <section className="booking-section">
-      <Booking />
+      <Booking bookings={bookings} />
     </section>
   );
 };
