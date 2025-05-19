@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getBookings, createBooking } from '../services/services';
-import Booking from '../components/Booking';
+import Booking from '../components/booking/Booking';
 
 const BookingPage = () => {
   const [bookings, setBookings] = useState([]);
@@ -21,7 +21,7 @@ const BookingPage = () => {
   }, []);
 
   return (
-    <section>
+    <section className="booking-section">
       <Booking />
     </section>
   );

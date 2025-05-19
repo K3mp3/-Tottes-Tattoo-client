@@ -1,7 +1,8 @@
 @use 'variables' as *;
-@use '_reset';
-@use '_header';
-@use '_hero-section';
+@use 'booking';
+@use 'reset';
+@use 'header';
+@use 'hero-section';
 
 h1 {
   font-family: 'Uncial Antiqua', system-ui;
@@ -33,14 +34,18 @@ section {
 .btn {
   display: block;
   width: fit-content;
+  background: linear-gradient(to right, #72ffb4, #bfaaff);
+  border: none;
+  color: #000;
+  font-weight: bold;
   padding: 1rem 2rem;
-  background: rgba(203, 12, 12, 0.89);
-  border-radius: 8px;
-  color: white;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
   text-decoration: none;
   &:hover {
-    color: white;
-    background: rgb(203, 12, 12);
+    transform: scale(1.05);
   }
 }
 
