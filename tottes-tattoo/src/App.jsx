@@ -6,8 +6,7 @@ import Confirmation from "./pages/Confirmation";
 export default function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-black text-white font-sans">
-      <h1 className="text-5xl text-purple-500">Tailwind works!</h1>
+      <div>
 
         <Routes>
           <Route path="/" element={<Home />} />

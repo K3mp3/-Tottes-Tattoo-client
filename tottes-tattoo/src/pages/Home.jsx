@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import mysticOracle from '../assets/mystic-oracle.png';
+
 
 export default function Home() {
   return (
@@ -10,10 +12,19 @@ export default function Home() {
       
 
       <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-        <img
-          src="https://images.unsplash.com/photo-1603955082018-c42df7e5680d?auto=format&fit=crop&w=800&q=80"
-          alt="Fantasy Tattoo"
-          style={{ width: '100%', borderRadius: '20px', boxShadow: '0 0 10px #bfaaff' }}
+      <img
+          src={mysticOracle}
+          alt="Mystic Oracle Tattoo"
+          style={{
+            width: '100%',
+            maxWidth: '700px',
+            borderRadius: '20px',
+            boxShadow: '0 0 40px #72ffb466',
+            transition: 'transform 0.4s',
+            cursor: 'pointer'
+          }}
+          onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.02)')}
+          onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
         />
         <br />
         <Link to="/booking">
