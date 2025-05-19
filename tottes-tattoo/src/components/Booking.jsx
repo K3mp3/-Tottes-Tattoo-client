@@ -1,16 +1,16 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function Booking() {
-  const navigate = useNavigate();
+const Booking = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    type: "tattoo",
-    date: "",
-    time: "",
-    duration: "1",
+    name: '',
+    email: '',
+    phone: '',
+    type: 'tattoo',
+    date: '',
+    time: '',
+    duration: '1',
     file: null,
   });
 
@@ -30,14 +30,14 @@ export default function Booking() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isWeekend(formData.date)) {
-      alert("Please choose a weekday (Mon–Fri)");
+      alert('Please choose a weekday (Mon–Fri)');
       return;
     }
 
     // Save locally & simulate email
-    localStorage.setItem("lastBooking", JSON.stringify(formData));
+    localStorage.setItem('lastBooking', JSON.stringify(formData));
     alert(`A magical scroll has been sent to ${formData.email}!`);
-    navigate("/confirmation");
+    navigate('/confirmation');
   };
 
   return (
@@ -74,12 +74,23 @@ export default function Booking() {
           type="date"
           onChange={handleChange}
           required
-          min={new Date().toISOString().split("T")[0]}
+          min={new Date().toISOString().split('T')[0]}
         />
         <select name="time" onChange={handleChange} required>
           <option value="">Select a time</option>
-          {["09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00"].map((t) => (
-            <option key={t} value={t}>{t}</option>
+          {[
+            '09:00',
+            '10:00',
+            '11:00',
+            '13:00',
+            '14:00',
+            '15:00',
+            '16:00',
+            '17:00',
+          ].map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
           ))}
         </select>
         <select name="duration" onChange={handleChange}>
@@ -96,4 +107,6 @@ export default function Booking() {
       </form>
     </div>
   );
-}
+};
+
+export default Booking;

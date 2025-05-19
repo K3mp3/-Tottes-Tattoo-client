@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getBookings, createBooking } from '../services/services';
+import Booking from '../components/Booking';
 
 const BookingPage = () => {
   const [bookings, setBookings] = useState([]);
@@ -21,21 +22,7 @@ const BookingPage = () => {
 
   return (
     <section>
-      <h1>Bokningar</h1>
-
-      <ul>
-        {bookings.map((booking) => (
-          <li key={booking._id}>
-            <b>
-              {booking.firstName} {booking.lastName}
-            </b>
-            <br />
-            Telefon: {booking.phone}
-            <br />
-            E-post: {booking.email}
-          </li>
-        ))}
-      </ul>
+      <Booking />
     </section>
   );
 };
