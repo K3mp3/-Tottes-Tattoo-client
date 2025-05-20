@@ -16,8 +16,8 @@ const Booking = ({ bookings }) => {
     duration: '',
     file: null,
   });
-
   const [step, setStep] = useState(1);
+  const [selctedTime, setSelectedTime] = useState([]);
 
   const isWeekend = (dateString) => {
     const day = new Date(dateString).getDay();
@@ -40,6 +40,18 @@ const Booking = ({ bookings }) => {
       ...prev,
       [name]: files ? files[0] : value,
     }));
+  };
+
+  const handleSelectTime = (t) => {
+    setSelectedTime((prevSelected) => {
+      if (prevSelected.includes(t)) {
+        return prevSelected.filter((time) => time !== t);
+      }
+      if (prevSelected.length < 2) {
+        return [...prevSelected, t];
+      }
+      return prevSelected;
+    });
   };
 
   const handleSubmit = (e) => {
@@ -82,23 +94,31 @@ const Booking = ({ bookings }) => {
 
         {step === 2 && (
           <>
-            <select
-              name="time"
-              onChange={handleChange}
-              value={formData.time}
-              required>
-              <option value="">Välj en tid</option>
-              {getAvailableTimes(formData.date).map((t) => (
-                <option key={t} value={t}>
+            {getAvailableTimes(formData.date).map((t) => (
+              <div key={t} className={'select-time-wrapper'}>
+                <button
+                  className={
+                    t === selctedTime[0] || t === selctedTime[1]
+                      ? 'select-time-btn selected'
+                      : 'select-time-btn'
+                  }
+                  value={t}
+                  type="button"
+                  onClick={() => {
+                    handleSelectTime(t);
+                  }}>
                   {t}
-                </option>
-              ))}
-            </select>
+                </button>
+              </div>
+            ))}
 
             <button
+              name="time"
+              value={selctedTime[0]}
               type="button"
-              onClick={() => setStep(3)}
-              disabled={!formData.time}>
+              onClick={() => {
+                setStep(3), handleChange;
+              }}>
               Nästa
             </button>
           </>

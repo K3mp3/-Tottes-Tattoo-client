@@ -58,6 +58,25 @@
     color: #aaa;
   }
 
+  .select-time-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    .select-time-btn {
+      margin-bottom: 1rem;
+      background: transparent;
+      border: 2px solid white;
+      border-radius: 10px;
+      color: white;
+    }
+
+    .selected {
+      border: 3px solid #bfaaff;
+      outline: 3px solid #72ffb4;
+    }
+  }
+
   button {
     background: linear-gradient(to right, #72ffb4, #bfaaff);
     border: none;
@@ -68,6 +87,9 @@
     border-radius: 10px;
     cursor: pointer;
     transition: transform 0.3s ease;
+    &:focus {
+      outline: none;
+    }
   }
 
   button:hover {
