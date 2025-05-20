@@ -12,7 +12,7 @@ h1 {
 }
 
 main:first-of-type {
-  height: 100vh;
+  min-height: 100vh;
 
   & > * {
     padding-top: $header-height;

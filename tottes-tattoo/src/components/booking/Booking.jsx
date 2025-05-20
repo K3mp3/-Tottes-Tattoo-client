@@ -8,13 +8,12 @@ const Booking = ({ bookings }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
     phone: '',
-    type: 'tattoo',
+    email: '',
     date: '',
     time: '',
-    duration: '',
-    file: null,
+    duration: 60,
+    image: null,
   });
   const [step, setStep] = useState(1);
   const [selctedTime, setSelectedTime] = useState([]);
