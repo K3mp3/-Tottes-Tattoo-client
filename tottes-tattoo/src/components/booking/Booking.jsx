@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { availableTimes } from '../../../config/config';
+import { createBooking } from '../../services/services';
+import Confirmation from './Confirmation';
 
 const Booking = ({ bookings }) => {
-  const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -13,8 +13,12 @@ const Booking = ({ bookings }) => {
     date: '',
     time: '',
     duration: 60,
+    employee: 'Nisse',
     image: null,
   });
+
+  const [response, setResponse] = useState(undefined);
+
   const [step, setStep] = useState(1);
   const [selctedTime, setSelectedTime] = useState([]);
 
@@ -23,14 +27,40 @@ const Booking = ({ bookings }) => {
     return day === 0 || day === 6;
   };
 
+  const isTimeAvailable = (date, time, duration) => {
+    if (!date || !time || !duration) return false;
+
+    const [startHour, startMinute] = time.split(':').map(Number);
+    const start = new Date(`${date}T${time}`);
+    const end = new Date(start.getTime() + duration * 60000);
+
+    const sameDayBookings = bookings.filter(
+      (b) => b.date && b.date.slice(0, 10) === date
+    );
+
+    for (let b of sameDayBookings) {
+      const bookedStart = new Date(`${b.date.slice(0, 10)}T${b.time}`);
+      const bookedEnd = new Date(
+        bookedStart.getTime() + (b.duration || 60) * 60000
+      );
+
+      const overlap = start < bookedEnd && end > bookedStart;
+      if (overlap) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const getAvailableTimes = (date) => {
     if (!date || !bookings) return [];
 
-    const bookedTimes = bookings
-      .filter((b) => b.date && b.date.slice(0, 10) === date)
-      .map((b) => b.time);
+    const duration = parseInt(formData.duration || 60);
 
-    return availableTimes.filter((time) => !bookedTimes.includes(time));
+    return availableTimes.filter((time) =>
+      isTimeAvailable(date, time, duration)
+    );
   };
 
   const handleChange = (e) => {
@@ -46,139 +76,183 @@ const Booking = ({ bookings }) => {
       if (prevSelected.includes(t)) {
         return prevSelected.filter((time) => time !== t);
       }
-      if (prevSelected.length < 2) {
-        return [...prevSelected, t];
+
+      if (prevSelected.length === 0) {
+        return [t];
       }
+
+      if (prevSelected.length === 1) {
+        const [prevTime] = prevSelected;
+
+        // Kolla om tiden är direkt före eller efter
+        const getMinutes = (timeStr) => {
+          const [h, m] = timeStr.split(':').map(Number);
+          return h * 60 + m;
+        };
+
+        const prevMinutes = getMinutes(prevTime);
+        const currentMinutes = getMinutes(t);
+
+        const diff = Math.abs(prevMinutes - currentMinutes);
+
+        if (diff === 60) {
+          return [prevTime, t];
+        } else {
+          return prevSelected;
+        }
+      }
+
       return prevSelected;
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const checkWeekend = () => {
     if (isWeekend(formData.date)) {
       alert('Välj en vardag (mån–fre)');
-      return;
+      return false;
     }
+    return true;
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    // Spara lokalt & simulera bekräftelse
-    localStorage.setItem('lastBooking', JSON.stringify(formData));
-    alert(`En magisk bokningsrulle har skickats till ${formData.email}!`);
-    navigate('/confirmation');
+    try {
+      const dataToSend = { ...formData };
+      delete dataToSend.image; // ❗️ta bort detta om du inte hanterar `image` på backend
+
+      await createBooking(dataToSend);
+      setResponse(201);
+    } catch (error) {
+      console.error('Fel vid bokning:', error);
+      alert('Något gick fel. Försök igen senare.');
+    }
   };
 
   return (
-    <div className="container">
-      <h2>Boka din tatueringssession</h2>
-      <form onSubmit={handleSubmit}>
-        {step === 1 && (
-          <>
-            <input
-              name="date"
-              type="date"
-              onChange={handleChange}
-              value={formData.date}
-              required
-              min={new Date().toISOString().split('T')[0]}
-            />
-
-            <button
-              type="button"
-              onClick={() => {
-                formData.date ? setStep(2) : alert('Välj ett datum först!');
-              }}>
-              Nästa
-            </button>
-          </>
-        )}
-
-        {step === 2 && (
-          <>
-            {getAvailableTimes(formData.date).map((t) => (
-              <div key={t} className={'select-time-wrapper'}>
+    <>
+      {!response && (
+        <div className="container">
+          <h2>Boka din tatueringssession</h2>
+          <form onSubmit={handleSubmit}>
+            {step === 1 && (
+              <>
+                <input
+                  name="date"
+                  type="date"
+                  onChange={handleChange}
+                  value={formData.date}
+                  required
+                  min={new Date().toISOString().split('T')[0]}
+                />
                 <button
-                  className={
-                    t === selctedTime[0] || t === selctedTime[1]
-                      ? 'select-time-btn selected'
-                      : 'select-time-btn'
-                  }
-                  value={t}
                   type="button"
                   onClick={() => {
-                    handleSelectTime(t);
+                    if (!formData.date) {
+                      alert('Välj ett datum först!');
+                    } else if (checkWeekend()) {
+                      setStep(2);
+                    }
                   }}>
-                  {t}
+                  Nästa
                 </button>
-              </div>
-            ))}
+              </>
+            )}
 
-            <button
-              name="time"
-              value={selctedTime[0]}
-              type="button"
-              onClick={() => {
-                setStep(3), handleChange;
-              }}>
-              Nästa
-            </button>
-          </>
-        )}
+            {step === 2 && (
+              <>
+                {getAvailableTimes(formData.date).map((t) => (
+                  <div key={t} className={'select-time-wrapper'}>
+                    <button
+                      className={
+                        t === selctedTime[0] || t === selctedTime[1]
+                          ? 'select-time-btn selected'
+                          : 'select-time-btn'
+                      }
+                      value={t}
+                      type="button"
+                      onClick={() => {
+                        handleSelectTime(t);
+                      }}>
+                      {t}
+                    </button>
+                  </div>
+                ))}
 
-        {step >= 3 && (
-          <>
-            <input
-              name="firstName"
-              type="text"
-              placeholder="Förnamn"
-              onChange={handleChange}
-              value={formData.firstName}
-              required
-            />
-            <input
-              name="lastName"
-              type="text"
-              placeholder="Efternamn"
-              onChange={handleChange}
-              value={formData.lastName}
-              required
-            />
-            <input
-              name="email"
-              type="email"
-              placeholder="E-postadress"
-              onChange={handleChange}
-              value={formData.email}
-              required
-            />
-            <input
-              name="phone"
-              type="tel"
-              placeholder="Telefonnummer"
-              onChange={handleChange}
-              value={formData.phone}
-              required
-            />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const time = selctedTime[0];
+                    const duration = parseInt(formData.duration || 60); // Default 60 om ej valt
 
-            <select
-              name="duration"
-              onChange={handleChange}
-              value={formData.duration}>
-              <option value="">Välj varaktighet</option>
-              <option value="1">1 timme</option>
-              <option value="2">2 timmar</option>
-            </select>
+                    if (!time) {
+                      alert('Välj en tid!');
+                    } else if (
+                      !isTimeAvailable(formData.date, time, duration)
+                    ) {
+                      alert(
+                        'Tiden krockar med en annan bokning. Välj en annan tid.'
+                      );
+                    } else {
+                      setFormData((prev) => ({ ...prev, time }));
+                      setStep(3);
+                    }
+                  }}>
+                  Nästa
+                </button>
+              </>
+            )}
 
-            <input
-              name="file"
-              type="file"
-              accept="image/*,application/pdf"
-              onChange={handleChange}
-            />
+            {step >= 3 && (
+              <>
+                <input
+                  name="firstName"
+                  type="text"
+                  placeholder="Förnamn"
+                  onChange={handleChange}
+                  value={formData.firstName}
+                  required
+                />
+                <input
+                  name="lastName"
+                  type="text"
+                  placeholder="Efternamn"
+                  onChange={handleChange}
+                  value={formData.lastName}
+                  required
+                />
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="E-postadress"
+                  onChange={handleChange}
+                  value={formData.email}
+                  required
+                />
+                <input
+                  name="phone"
+                  type="tel"
+                  placeholder="Telefonnummer"
+                  onChange={handleChange}
+                  value={formData.phone}
+                  required
+                />
 
-            <button type="submit">Skicka bokning</button>
-          </>
-        )}
-      </form>
-    </div>
+                <input
+                  name="file"
+                  type="file"
+                  accept="image/*,application/pdf"
+                  onChange={handleChange}
+                />
+
+                <button type="submit">Skicka bokning</button>
+              </>
+            )}
+          </form>
+        </div>
+      )}
+
+      {response === 201 && <Confirmation />}
+    </>
   );
 };
 
