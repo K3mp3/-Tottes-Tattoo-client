@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { availableTimes } from '../../../config/config';
-import { createBooking } from '../../services/services';
-import Confirmation from './Confirmation';
+import { useState } from "react";
+import { availableTimes } from "../../../config/config";
+import { createBooking } from "../../services/services";
+import Confirmation from "./Confirmation";
 
 const Booking = ({ bookings }) => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    phone: '',
-    email: '',
-    date: '',
-    time: '',
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+    date: "",
+    time: "",
     duration: 60,
-    employee: 'Nisse',
-    image: null,
+    employee: "Nisse",
+    file: null,
   });
 
   const [response, setResponse] = useState(undefined);
@@ -30,7 +29,7 @@ const Booking = ({ bookings }) => {
   const isTimeAvailable = (date, time, duration) => {
     if (!date || !time || !duration) return false;
 
-    const [startHour, startMinute] = time.split(':').map(Number);
+    const [startHour, startMinute] = time.split(":").map(Number);
     const start = new Date(`${date}T${time}`);
     const end = new Date(start.getTime() + duration * 60000);
 
@@ -84,9 +83,8 @@ const Booking = ({ bookings }) => {
       if (prevSelected.length === 1) {
         const [prevTime] = prevSelected;
 
-        // Kolla om tiden är direkt före eller efter
         const getMinutes = (timeStr) => {
-          const [h, m] = timeStr.split(':').map(Number);
+          const [h, m] = timeStr.split(":").map(Number);
           return h * 60 + m;
         };
 
@@ -108,23 +106,23 @@ const Booking = ({ bookings }) => {
 
   const checkWeekend = () => {
     if (isWeekend(formData.date)) {
-      alert('Välj en vardag (mån–fre)');
+      alert("Välj en vardag (mån–fre)");
       return false;
     }
     return true;
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
     try {
       const dataToSend = { ...formData };
-      // delete dataToSend.image; // ❗️ta bort detta om du inte hanterar `image` på backend
 
       await createBooking(dataToSend);
       setResponse(201);
     } catch (error) {
-      console.error('Fel vid bokning:', error);
-      alert('Något gick fel. Försök igen senare.');
+      console.error("Fel vid bokning:", error);
+      alert("Något gick fel. Försök igen senare.");
     }
   };
 
@@ -142,17 +140,18 @@ const Booking = ({ bookings }) => {
                   onChange={handleChange}
                   value={formData.date}
                   required
-                  min={new Date().toISOString().split('T')[0]}
+                  min={new Date().toISOString().split("T")[0]}
                 />
                 <button
                   type="button"
                   onClick={() => {
                     if (!formData.date) {
-                      alert('Välj ett datum först!');
+                      alert("Välj ett datum först!");
                     } else if (checkWeekend()) {
                       setStep(2);
                     }
-                  }}>
+                  }}
+                >
                   Nästa
                 </button>
               </>
@@ -161,18 +160,19 @@ const Booking = ({ bookings }) => {
             {step === 2 && (
               <>
                 {getAvailableTimes(formData.date).map((t) => (
-                  <div key={t} className={'select-time-wrapper'}>
+                  <div key={t} className={"select-time-wrapper"}>
                     <button
                       className={
                         t === selctedTime[0] || t === selctedTime[1]
-                          ? 'select-time-btn selected'
-                          : 'select-time-btn'
+                          ? "select-time-btn selected"
+                          : "select-time-btn"
                       }
                       value={t}
                       type="button"
                       onClick={() => {
                         handleSelectTime(t);
-                      }}>
+                      }}
+                    >
                       {t}
                     </button>
                   </div>
@@ -182,21 +182,22 @@ const Booking = ({ bookings }) => {
                   type="button"
                   onClick={() => {
                     const time = selctedTime[0];
-                    const duration = parseInt(formData.duration || 60); // Default 60 om ej valt
+                    const duration = parseInt(formData.duration || 60);
 
                     if (!time) {
-                      alert('Välj en tid!');
+                      alert("Välj en tid!");
                     } else if (
                       !isTimeAvailable(formData.date, time, duration)
                     ) {
                       alert(
-                        'Tiden krockar med en annan bokning. Välj en annan tid.'
+                        "Tiden krockar med en annan bokning. Välj en annan tid."
                       );
                     } else {
                       setFormData((prev) => ({ ...prev, time }));
                       setStep(3);
                     }
-                  }}>
+                  }}
+                >
                   Nästa
                 </button>
               </>
