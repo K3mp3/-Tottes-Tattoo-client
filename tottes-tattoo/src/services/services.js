@@ -17,12 +17,21 @@ export const getBookings = async () => {
 
 export const createBooking = async (bookingData) => {
   try {
+    const formData = new FormData();
+
+    // Add all booking data
+    Object.keys(bookingData).forEach((key) => {
+      if (key === 'image' && bookingData[key]) {
+        formData.append('file', bookingData[key]); // Backend expects 'file'
+      } else if (key !== 'image') {
+        formData.append(key, bookingData[key]);
+      }
+    });
+
     const response = await fetch(`${API_URL}/bookings`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(bookingData),
+      // Remove Content-Type header - browser sets it automatically for FormData
+      body: formData,
     });
 
     if (!response.ok) {

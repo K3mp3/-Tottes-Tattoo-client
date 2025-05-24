@@ -115,10 +115,10 @@ const Booking = ({ bookings }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(formData);
     try {
       const dataToSend = { ...formData };
-      delete dataToSend.image; // ❗️ta bort detta om du inte hanterar `image` på backend
+      // delete dataToSend.image; // ❗️ta bort detta om du inte hanterar `image` på backend
 
       await createBooking(dataToSend);
       setResponse(201);
